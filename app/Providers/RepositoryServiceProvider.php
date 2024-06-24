@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Infrastructure\Repositories\Contracts\AuthRepositoryInterface;
+use App\Infrastructure\Repositories\Contracts\BaseRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
-use App\Infrastructure\Repositories\AuthRepositoryInterface;
-use App\Infrastructure\Repositories\BaseRepositoryInterface;
 use App\Infrastructure\Repositories\AuthRepository;
 use App\Infrastructure\Repositories\BaseRepository;
 use App\Infrastructure\Repositories\BrandRepository;

@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 
-use App\Infrastructure\Repositories\AuthRepositoryInterface;
+use App\Infrastructure\Repositories\Contracts\AuthRepositoryInterface;
 
 class AuthService
 {

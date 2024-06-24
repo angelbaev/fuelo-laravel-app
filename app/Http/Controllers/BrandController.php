@@ -7,6 +7,7 @@ use App\Services\BrandService;
 use App\Infrastructure\Repositories\BrandRepository;
 use App\Http\Resources\BrandResource;
 use App\Http\Requests\BrandRequest;
+use App\DataTransferObjects\BrandDataTransferObject;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
@@ -19,9 +20,17 @@ class BrandController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return BrandResource::make($this->brandService->all());
+        $filters = [];
+            if ( $request->get('name', null)) {
+                $search = $request->get('name');
+                $filters[] =  ['name', 'LIKE', "%{$search}%"  ];
+            }
+        $perPage = $request->get('perPage', 15);
+
+
+        return BrandResource::make($this->brandService->all($filters,$perPage, BrandDataTransferObject::class));
     }
 
     /**
@@ -37,10 +46,11 @@ class BrandController extends Controller
      */
     public function store(BrandRequest $request)
     {
+        $brandDataTransferObject = BrandDataTransferObject::fromArray(
+            $request->validated()
+        );
 
-        $validated = $request->validated();
-
-        $brand = $this->brandService->create($validated);
+        $brand = $this->brandService->create($brandDataTransferObject);
 
         return BrandResource::make($brand);
     }
@@ -66,9 +76,11 @@ class BrandController extends Controller
      */
     public function update(BrandRequest $request, Brand $brand)
     {
-        $validated = $request->validated();
+        $brandDataTransferObject = BrandDataTransferObject::fromArray(
+            $request->validated()
+        );
 
-        $brand = $this->brandService->update($validated, $brand->id);
+        $brand = $this->brandService->update($brandDataTransferObject, $brand->id);
 
         return BrandResource::make($brand);
     }

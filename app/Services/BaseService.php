@@ -1,21 +1,27 @@
 <?php
 namespace App\Services;
 
-use App\Infrastructure\Repositories\BaseRepositoryInterface;
+use App\DataTransferObjects\Contracts\DataTransferObjectAwareInterface;
+use App\Infrastructure\Repositories\Contracts\BaseRepositoryInterface;
 
 class BaseService
 {
-    public function __construct(protected BaseRepositoryInterface $repository) 
+    public function __construct(protected BaseRepositoryInterface $repository)
     {
+      
     }
 
-    public function create(array $data)
+    public function create(DataTransferObjectAwareInterface $dataTransferObject)
     {
+       $data = $dataTransferObject->toArray();
+
         return $this->repository->create($data);
     }
 
-    public function update(array $data, $id)
+    public function update(DataTransferObjectAwareInterface $dataTransferObject, $id)
     {
+        $data = $dataTransferObject->toArray();
+
         return $this->repository->update($data, $id);
     }
 
@@ -25,9 +31,10 @@ class BaseService
         return $this->repository->delete($id);
     }
 
-    public function all()
+    public function all(array $filters = [], int $perPage = 15, $DataTransferObjectClass = null)
     {
-        return $this->repository->all();
+         //https://sandulat.com/moving-from-laravel-api-resources-to-dtos/
+        return $this->repository->all($filters, $perPage, $DataTransferObjectClass);
     }
     
     public function find($id)

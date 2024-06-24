@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('src_id')->unique();
             $table->string('logo');
             $table->string('name');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

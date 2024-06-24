@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Repositories;
 
+use App\Infrastructure\Repositories\Contracts\AuthRepositoryInterface;
 use App\Models\User;
-use App\Infrastructure\Repositories\AuthRepositoryInterface;
 
 class AuthRepository implements AuthRepositoryInterface
 {

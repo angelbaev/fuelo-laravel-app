@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+
+use App\Http\Requests\Contracts\RequestAwareInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BrandRequest extends BaseRequest
+class BrandRequest extends BaseRequest implements RequestAwareInterface
 {
 
     public function rules(): array
@@ -13,6 +15,7 @@ class BrandRequest extends BaseRequest
             'name' => 'required',
             'logo' => 'required',
             'src_id' => 'required|numeric|unique:brands',
+            'status' => 'required|numeric',
         ];
     }
 }
