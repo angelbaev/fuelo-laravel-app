@@ -21,7 +21,7 @@ class BaseRepository implements BaseRepositoryInterface
         }
 
         return $query->paginate($perPage)->through(function($model) use ($DataTransferObjectClass) {
-            if ($DataTransferObjectClass) {
+            if (/*$DataTransferObjectClass*/ false) {
                 return $DataTransferObjectClass::fromModel($model);
             } else {
                 return $model;

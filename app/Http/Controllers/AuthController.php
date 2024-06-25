@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\AuthService;
+use App\DataTransferObjects\AuthDataTransferObject;
+use App\DataTransferObjects\UserDataTransferObject;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Http\Requests\AuthLoginRequest;
+use App\Http\Resources\AuthResource;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 
@@ -89,11 +92,12 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken($token)
-    {
-        return response()->json([
+    { //
+        return AuthResource::make(AuthDataTransferObject::fromArray([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'user' => UserDataTransferObject::fromModel(auth()->user())
+        ]));
     }
 }
