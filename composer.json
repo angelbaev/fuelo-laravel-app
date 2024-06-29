@@ -4,12 +4,19 @@
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/angelbaev/abaev-fuelo-client-api.git"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "php-open-source-saver/jwt-auth": "^2.4"
+        "php-open-source-saver/jwt-auth": "^2.4",
+        "abaev/fuelo-client-api": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -59,7 +66,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "composer/installers": true
         }
     },
     "minimum-stability": "stable",

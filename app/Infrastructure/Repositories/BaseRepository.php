@@ -13,20 +13,21 @@ class BaseRepository implements BaseRepositoryInterface
     {
     }
 
-    public function all(array $filters = [], int $perPage = 15, $DataTransferObjectClass = null): LengthAwarePaginator
-{
+    public function all(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    {
         $query = $this->model->query();
         if (count($filters)) {
             $query->where($filters);
         }
 
-        return $query->paginate($perPage)->through(function($model) use ($DataTransferObjectClass) {
-            if (/*$DataTransferObjectClass*/ false) {
-                return $DataTransferObjectClass::fromModel($model);
-            } else {
-                return $model;
-            }
-        });
+        return $query->paginate($perPage);
+//        return $query->paginate($perPage)->through(function($model) use ($DataTransferObjectClass) {
+//            if (/*$DataTransferObjectClass*/ false) {
+//                return $DataTransferObjectClass::fromModel($model);
+//            } else {
+//                return $model;
+//            }
+//        });
        // return $this->model->all();
     }
 

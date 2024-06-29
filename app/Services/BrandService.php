@@ -6,8 +6,10 @@ use  App\DataTransferObjects\BrandDataTransferObject;
 
 class BrandService extends BaseService
 {
+    protected $dataTransferObjectClass = BrandDataTransferObject::class;
+
     public function __construct(BrandRepositoryInterface $repository)
     {
-        parent::__construct($repository, BrandDataTransferObject::class);
+        parent::__construct($repository);
     }
 }

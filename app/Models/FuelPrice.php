@@ -7,12 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class Fuel extends Model implements ModelAwareInterface
+class FuelPrice extends Model implements ModelAwareInterface
 {
     use HasFactory, HasUuids;
-
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
 
     /**
      * The attributes that are mass assignable.
@@ -20,13 +17,19 @@ class Fuel extends Model implements ModelAwareInterface
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'code',
-        'status',
+        'fuel_id',
+        'dimension_id',
+        'price',
+        'date'
     ];
 
-    public function fuelPrices()
+    public function fuel()
     {
-        return $this->hasMany(FuelPrice::class);
+        return $this->belongsTo(Fuel::class);
+    }
+
+    public function dimension()
+    {
+        return $this->belongsTo(Dimension::class);
     }
 }

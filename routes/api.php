@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\FuelController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\DimensionController;
+use App\Http\Controllers\FuelPriceController;
 
 //Route::get('/user', function (Request $request) {
 //    return $request->user();
@@ -26,3 +28,5 @@ Route::group([
 Route::resource('brands', BrandController::class)->middleware('auth:api');
 Route::resource('fuels', FuelController::class, ['only' => ['index', 'show']])->middleware('auth:api');
 Route::resource('districts', DistrictController::class, ['only' => ['index', 'show']])->middleware('auth:api');
+Route::resource('districts', DimensionController::class, ['only' => ['index', 'show']])->middleware('auth:api');
+Route::resource('prices', FuelPriceController::class, ['only' => ['index', 'show']])->middleware('auth:api');

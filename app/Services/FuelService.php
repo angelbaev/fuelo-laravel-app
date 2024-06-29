@@ -6,8 +6,11 @@ use App\Infrastructure\Repositories\Contracts\FuelRepositoryInterface;
 
 class FuelService extends BaseService
 {
+    protected $dataTransferObjectClass = FuelDataTransferObject::class;
+
+
     public function __construct(FuelRepositoryInterface $repository)
     {
-        parent::__construct($repository, FuelDataTransferObject::class);
+        parent::__construct($repository);
     }
 }

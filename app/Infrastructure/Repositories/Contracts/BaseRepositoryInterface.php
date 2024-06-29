@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 interface BaseRepositoryInterface
 {
-    public function all(array $filters = [], int $perPage = 15, $DataTransferObjectClass = null): LengthAwarePaginator;
+    public function all(array $filters = [], int $perPage = 15): LengthAwarePaginator;
 
     public function create(array $data): Model;
 

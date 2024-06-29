@@ -12,6 +12,9 @@ class Brand extends Model implements ModelAwareInterface
 {
     use HasFactory, HasUuids;
 
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
+
     /**
      * The attributes that are mass assignable.
      *

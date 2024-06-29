@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class Fuel extends Model implements ModelAwareInterface
+class Dimension extends Model implements ModelAwareInterface
 {
     use HasFactory, HasUuids;
 
@@ -21,7 +21,6 @@ class Fuel extends Model implements ModelAwareInterface
      */
     protected $fillable = [
         'name',
-        'code',
         'status',
     ];
 

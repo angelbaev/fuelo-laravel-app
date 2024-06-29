@@ -19,8 +19,24 @@ abstract class BaseDataTransferObject implements DataTransferObjectAwareInterfac
 {
     public function toArray(): array
     {
-        return get_object_vars($this);
+       return get_object_vars($this);
     }
+
+    public function toStoreArray(): array
+    {
+        $array = get_object_vars($this);
+
+        foreach ($array as $key => $value) {
+            if (is_object($value) && method_exists($value, 'toArray')) {
+                $array["{$key}_id"] = $value->id;
+                unset($array[$key]);
+            }
+        }
+
+        return $array;
+    }
+
+
 }
 // https://medium.com/@sliusarchyn/value-objects-in-laravel-use-it-12ba71b00281
 // https://dev.to/bdelespierre/using-value-objects-in-laravel-models-44la
