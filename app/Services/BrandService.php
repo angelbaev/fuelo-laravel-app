@@ -12,4 +12,14 @@ class BrandService extends BaseService
     {
         parent::__construct($repository);
     }
+
+    public function findBrandBySourceId(int $src_id) {
+        $model = $this->repository->findBrandBySourceId($src_id);
+
+        if (!$model) {
+            return null;
+        }
+
+        return $this->convertToDataTransferObject($model);
+    }
 }

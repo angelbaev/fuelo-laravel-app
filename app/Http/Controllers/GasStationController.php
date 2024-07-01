@@ -2,33 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTransferObjects\DistrictDataTransferObject;
-use App\Http\Resources\DistrictResource;
-use App\Models\District;
-use App\Services\DistrictService;
+use App\DataTransferObjects\GasStationDataTransferObject;
+use App\Http\Resources\GasStationResource;
+use App\Models\GasStation;
+use App\Services\GasStationService;
 use Illuminate\Http\Request;
 
-class DistrictController extends Controller
+class GasStationController extends Controller
 {
 
-    public function __construct(protected DistrictService $districtService)
+    public function __construct(protected GasStationService $gasStationService)
     {
-
     }
 
-    /**
+/**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
         $filters = [];
-        if ( $request->get('name', null)) {
-            $search = $request->get('name');
-            $filters[] =  ['name', 'LIKE', "%{$search}%"  ];
-        }
         $perPage = $request->get('perPage', 15);
 
-        return DistrictResource::make($this->districtService->all($filters,$perPage));
+
+        return GasStationResource::make($this->gasStationService->all($filters,$perPage,GasStationDataTransferObject::class));
     }
 
     /**
@@ -50,9 +46,9 @@ class DistrictController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(District $district)
+    public function show(GasStation $gasStation)
     {
-        return DistrictResource::make($district);
+        return GasStationResource::make($gasStation);
     }
 
     /**

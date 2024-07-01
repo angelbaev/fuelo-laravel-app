@@ -12,7 +12,9 @@ class UserDataTransferObject extends ReadableDataTransferObject
     public function __construct(
         public readonly ?string $id,
         public readonly string $name,
-        public readonly string $email
+        public readonly string $email,
+        public readonly ?string $password = null,
+
     ) {
         $this->validate();
     }

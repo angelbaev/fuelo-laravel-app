@@ -28,7 +28,7 @@ class DimensionController extends Controller
         $perPage = $request->get('perPage', 15);
 
 
-        return DimensionResource::make($this->dimensionService->all($filters,$perPage, DimensionDataTransferObject::class));
+        return DimensionResource::make($this->dimensionService->all($filters,$perPage));
     }
 
     /**

@@ -10,6 +10,7 @@ use App\DataTransferObjects\UserDataTransferObject;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Resources\AuthResource;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 
@@ -29,9 +30,19 @@ class AuthController extends Controller
         $validated = $request->validated();
         $validated['password'] = bcrypt($validated['password']);
 
-        $user = $this->authService->create($validated);
+        $userDataTransferObject = new UserDataTransferObject(
+            null,
+            $validated['name'],
+            $validated['email'],
+            $validated['password']
+        );
 
-        return response()->json($user, 201);
+        $user = $this->authService->create($userDataTransferObject);
+
+        return UserResource::make(
+            UserDataTransferObject::fromModel($user)
+        );        
+        // return response()->json($user, 201);
     }
 
 
@@ -59,7 +70,9 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return UserResource::make(
+            UserDataTransferObject::fromModel(auth()->user())
+        );
     }
 
     /**

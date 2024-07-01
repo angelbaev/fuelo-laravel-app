@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('fuel_prices', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('fuel_id')->index();
-            $table->uuid('dimension_id')->index();;
+            $table->uuid('dimension_id')->index();
             $table->decimal('price', 8, 2);
             $table->date('date');
             $table->timestamps();

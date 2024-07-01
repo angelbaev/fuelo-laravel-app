@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Infrastructure\Repositories\Contracts\AuthRepositoryInterface;
+use App\DataTransferObjects\Contracts\DataTransferObjectAwareInterface;
 
 class AuthService
 {
@@ -9,8 +10,10 @@ class AuthService
     {
     }
 
-    public function create(array $data)
+    public function create(DataTransferObjectAwareInterface $dataTransferObject)
     {
+        $data = $dataTransferObject->toStoreArray();
+        
         return $this->repository->create($data);
     }
 
