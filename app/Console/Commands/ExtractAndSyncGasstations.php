@@ -60,46 +60,52 @@ class ExtractAndSyncGasstations extends Command
         );
 
         $this->info('Start extract and sync.');
-        foreach($brandCollection as $brand) {
-            $this->info('Extract ('.$brand->name.').');
-            foreach($fuelCodes as $fuelCode) {
-           
-                $responce = Fuelo::getGasStations($brand->src_id, $fuelCode);
+        foreach ($brandCollection as $brand) {
+            $this->info('Extracting ('.$brand->name.').');
+            foreach ($fuelCodes as $fuelCode) {
+                $response = Fuelo::getGasStations($brand->src_id, $fuelCode);
 
-                if (isset($responce['error_message'])) {
+                if (isset($response['error_message'])) {
                     continue;
                 }
 
-                $this->info('Extract data for ('.$brand->name.') with fuel code (' . $fuelCode . ').');
+                $this->info('Extracted data for ('.$brand->name.') with fuel code (' . $fuelCode . ').');
 
-                foreach((array)$responce['gasstations'] as $gas_station) {
+                collect($response['gasstations'])->chunk(50)->each(function ($chunk) use ($brand) {
+                    foreach ($chunk as $gas_station) {
+                        if ($this->gasStationService->findGasStationBySourceId($gas_station['id'])) {
+                            $this->info('--Skipping gas station with src id ('.$gas_station['id'].') already exists.');
+                            continue;
+                        }
 
-                    if ($this->gasStationService->findGasStationBySourceId($gas_station['id'])) {
-                        $this->info('--Skip gasstations with src id ('.$gas_station['id'].') already exist in the system.');
-                        continue;
+                        $brand = $this->brandService->findBrandBySourceId((int)$gas_station['brand_id']);
+                        $gasStation = new GasStationDataTransferObject(
+                            null,
+                            $gas_station['id'],
+                            $gas_station['brand_id'],
+                            $gas_station['name'],
+                            $gas_station['city'],
+                            $gas_station['address'],
+                            $gas_station['lat'],
+                            $gas_station['lon'],
+                            $brand
+                        );
+
+                        $this->gasStationService->create($gasStation);
+                        $this->info('Added gas station with id ('.$gas_station['id'].').');
                     }
+                    // Free memory after each chunk
+                    unset($chunk);
+                    gc_collect_cycles();
+                });
 
-                    $brand = $this->brandService->findBrandBySourceId((int)$gas_station['brand_id']);
-
-                    $gasStation = new GasStationDataTransferObject(
-                        null,
-                        $gas_station['id'],
-                        $gas_station['brand_id'],
-                        $gas_station['name'],
-                        $gas_station['city'],
-                        $gas_station['address'],
-                        $gas_station['lat'],
-                        $gas_station['lon'],
-                        $brand
-                    );
-
-                    $this->gasStationService->create($gasStation);
-                    $this->info('Add gasstation with id ('.$gas_station['id'].').');
-                }
+                // Free memory
+                unset($response);
                 sleep(1);
                 gc_collect_cycles();
             }
         }
+
         $this->info('Gasstations have been synced successfully.');
 
     }
