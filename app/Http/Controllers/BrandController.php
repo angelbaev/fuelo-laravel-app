@@ -30,7 +30,7 @@ class BrandController extends Controller
         $perPage = $request->get('perPage', 15);
 
 
-        return BrandResource::make($this->brandService->all($filters,$perPage, BrandDataTransferObject::class));
+        return BrandResource::make($this->brandService->all($filters,$perPage));
     }
 
     /**
