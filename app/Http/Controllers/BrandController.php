@@ -91,5 +91,7 @@ class BrandController extends Controller
     public function destroy(Brand $brand)
     {
         $this->brandService->delete($brand->id);
+
+        return response()->noContent();
     }
 }
