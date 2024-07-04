@@ -24,7 +24,7 @@ class GasStationController extends Controller
         $perPage = $request->get('perPage', 15);
 
 
-        return GasStationResource::make($this->gasStationService->all($filters,$perPage,GasStationDataTransferObject::class));
+        return GasStationResource::make($this->gasStationService->all($filters,$perPage));
     }
 
     /**
@@ -46,9 +46,10 @@ class GasStationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(GasStation $gasStation)
+    public function show(GasStation $gasstation)
     {
-        return GasStationResource::make($gasStation);
+
+        return GasStationResource::make(GasStationDataTransferObject::fromModel($gasstation));
     }
 
     /**

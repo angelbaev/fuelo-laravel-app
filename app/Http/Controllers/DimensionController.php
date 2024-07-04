@@ -2,33 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTransferObjects\FuelPriceDataTransferObject;
-use App\Http\Resources\FuelPriceResource;
-use App\Models\FuelPrice;
-use App\Services\FuelPriceService;
+use App\Http\Resources\DimensionResource;
+use App\Http\Resources\DistrictResource;
+use App\Services\DimensionService;
+use App\Models\Dimension;
+
 use Illuminate\Http\Request;
 
-class FuelPriceController extends Controller
+class DimensionController extends Controller
 {
 
-    public function __construct(protected FuelPriceService $fuelPriceService)
+    public function __construct(protected DimensionService $dimensionService)
     {
+
     }
 
-/**
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
         $filters = [];
-//        if ( $request->get('name', null)) {
-//            $search = $request->get('name');
-//            $filters[] =  ['name', 'LIKE', "%{$search}%"  ];
-//        }
+        if ( $request->get('name', null)) {
+            $search = $request->get('name');
+            $filters[] =  ['name', 'LIKE', "%{$search}%"  ];
+        }
         $perPage = $request->get('perPage', 15);
 
-
-        return FuelPriceResource::make($this->fuelPriceService->all($filters,$perPage, FuelPriceDataTransferObject::class));
+        return DistrictResource::make($this->dimensionService->all($filters,$perPage));
     }
 
     /**
@@ -50,10 +51,9 @@ class FuelPriceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(FuelPrice $price)
+    public function show(Dimension $dimension)
     {
-
-        return FuelPriceResource::make(FuelPriceDataTransferObject::fromModel($price));
+        return DimensionResource::make($dimension);
     }
 
     /**

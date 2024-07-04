@@ -11,11 +11,19 @@ class BrandRequest extends BaseRequest implements RequestAwareInterface
 
     public function rules(): array
     {
-        return [
-            'name' => 'required',
-            'logo' => 'required',
-            'src_id' => 'required|numeric|unique:brands',
+        $rules = [
+            'name' => 'required|string|max:255',
+            'logo' => 'required|string|max:255',
             'status' => 'required|numeric',
         ];
+
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            $rules['src_id'] = 'required|numeric';
+//            $rules['src_id'] = 'required|numeric|unique:brands,src_id,' . $this->route('brand')->src_id;
+        } else {
+            $rules['src_id'] = 'required|numeric|unique:brands';
+        }
+
+        return $rules;
     }
 }
